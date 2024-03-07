@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card_img">
+        <img src="https://placehold.co/300x150" alt="room_img">
+    </div>
+    <div class="card_body">
+        <p>{{room.name}}</p>
+        <p>{{room.price}}</p>
+        {% if room.available == True %}
+        <p class="available">{{room.available}}</p>
+        {% else %}
+        <p class="unavailable">{{room.available}}</p>
+        {% endif %}
+    </div>
+</div>

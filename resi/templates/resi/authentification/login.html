@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Shamma Residences</h1>
+    {% if user_id %}
+        <div class="container password">
+            <p>S'identifier</p>
+            <form action="{% url 'resi:log_in' %}" method="POST">
+                {% csrf_token %}
+
+                <input type="hidden" name="user_id" value="{{ user_id }}">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password">
+
+                <button type="submit">Continuer</button>
+            </form>
+        </div>
+    {% else %}
+        <div class="container email">
+            <p>S'identifier</p>
+            <form action="{% url 'resi:verification_account' %}" method="POST">
+                {% csrf_token %}
+
+                <label for="email_or_number">Adresse e-mail ou numéro de téléphone</label>
+                <input type="text" id="email_or_number" name="email_or_number">
+
+                <button type="submit">Continuer</button>
+            </form>
+        </div>
+
+        <p><a href="{% url 'resi:sign_up' %}">S'inscrire</a></p>
+    {% endif %}
+
+</body>
+
+</html>

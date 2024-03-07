@@ -1,0 +1,63 @@
+
+1. Création d'un compte utilisateur:  
+  ✔ L'utilisateur accède à la page d'inscription et fournit les informations nécessaires pour créer un compte utilisateur (nom d'utilisateur, adresse e-mail, mot de passe, etc.). @done(24-03-01 06:39)
+  ✔ Le système vérifie les données et crée un nouveau compte utilisateur. @done(24-03-01 06:39)
+
+2. Connexion à un compte utilisateur :
+
+  ✔ L'utilisateur accède à la page de connexion et entre ses identifiants (nom d'utilisateur et mot de passe). @done(24-03-01 06:40)
+  ✔ Le système vérifie les identifiants et authentifie l'utilisateur. @done(24-03-01 06:40)
+
+3. Recherche de chambres disponibles :
+
+  ☐ L'utilisateur accède à la page de recherche de chambres.
+  ☐ Il sélectionne les critères de recherche tels que la date d'arrivée, la date de départ, le nombre de personnes, etc.
+  ☐ Le système affiche les chambres disponibles correspondant aux critères de recherche.
+
+4. Sélection d'une chambre et réservation :
+
+  ☐ L'utilisateur sélectionne une chambre disponible.
+  ☐ Il fournit les détails de réservation tels que la date d'arrivée, la date de départ, etc.
+  ☐ Le système vérifie la disponibilité de la chambre pour les dates spécifiées et crée une réservation si la chambre est disponible.
+  ☐ Une facture est automatiquement générée pour la réservation, calculant le montant total en fonction du prix de la chambre et de la durée de la réservation.
+  ☐ L'utilisateur peut procéder au paiement initial de la réservation.:
+    Creation de la facture, recuperation de son id, redirection vers la page de paiement avec l'id du paiement caché. Après validation du formulaire de paiement, recuperatioon du montant, recuperation de l'id de la facture puis creation d'un nouvel paiement(instance) avec l'id de la facture, le montant payé.  
+  - ## PLUS DE DETAILS:
+      4.1. Sélection de la chambre et fourniture des détails de la réservation :
+
+          ☐ L'utilisateur sélectionne une chambre disponible à partir de la liste des chambres disponibles affichées sur la page de recherche.
+          ☐ Il fournit les détails de la réservation tels que la date d'arrivée, la date de départ, le nombre de personnes, etc. à l'aide d'un formulaire de réservation.
+
+      4.2. Vérification de la disponibilité et création de la réservation :
+
+          ☐ Une fois que l'utilisateur soumet le formulaire de réservation, le système vérifie la disponibilité de la chambre pour les dates spécifiées.
+          ☐ Si la chambre est disponible, le système crée une nouvelle réservation associée à la chambre sélectionnée et au client correspondant.
+
+      4.3. Calcul du montant total et création de la facture :
+
+          ☐ Après la création de la réservation, le système calcule automatiquement le montant total de la réservation en fonction du prix de la chambre et de la durée du séjour.
+          ☐ Une nouvelle facture est automatiquement créée pour cette réservation avec le montant total calculé.
+
+      4.4. Paiement initial de la réservation :
+
+          ☐ Une fois la réservation créée et la facture générée, l'utilisateur est redirigé vers la page de paiement.
+          ☐ Il effectue le paiement initial de la réservation en utilisant un formulaire de paiement en ligne sécurisé.
+          ☐ Après le paiement réussi, le montant payé est enregistré dans la facture comme montant déjà payé.
+
+      4.5. Mise à jour de la disponibilité de la chambre :
+
+          ☐ Après le paiement réussi, la chambre réservée devient indisponible pour les dates spécifiées.
+          ☐ Le système met à jour le statut de disponibilité de la chambre dans la base de données pour refléter qu'elle est maintenant réservée pour ces dates.
+
+5. Consultation des réservations et gestion du compte :
+
+  ☐ L'utilisateur peut accéder à la page de son compte où il peut voir ses réservations passées, les détails de la facture, etc.
+  ☐ Il peut également mettre à jour ses informations personnelles, ajouter des contacts supplémentaires, etc.
+
+6. Ajout de commentaires et évaluation des séjours :
+
+  ☐ Après avoir séjourné dans une chambre, l'utilisateur peut accéder à la page de commentaires et évaluation.
+  ☐ Il peut laisser un commentaire sur son expérience et attribuer une note à la chambre.
+
+
+

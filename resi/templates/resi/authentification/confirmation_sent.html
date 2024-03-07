@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvelle connexion détectée</title>
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        padding: 20px;
+        font-size: 14px;
+    }
+
+    .email-container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    p {
+        color: #666;
+    }
+</style>
+
+<body>
+    <div class="email_container">
+        <h1>Vérifier votre adresse e-mail</h1>
+        <p>Bonjour, {{user_lastname}}</p>
+        <p>Vous devez vérifier votre adresse e-mail pour continuer à utiliser votre compte {{ company_name }}. Entrez le
+            code suivant
+            pour vérifier votre adresse e-mail :</p>
+
+        <p>{{ confirmation_code }}</p>
+        <!-- En-têtes spécifiques -->
+        <br>
+        <!-- <p><strong>From:</strong> {{company_name}} &lt;noreply@my.jumia.com&gt;</p> -->
+        <p><strong>To:</strong> {{ user_email }}</p>
+        <p><strong>Content-Type:</strong> text/html; charset="utf-8"</p>
+        <p><strong>Content-Transfer-Encoding:</strong> quoted-printable</p>
+        <p><strong>X-Mailgun-Tag:</strong> Communication Module</p>
+        <p><strong>X-Mailgun-Variables:</strong> {"data": "{\n \"network\": \"CI\"\n}"}</p>
+    </div>
+</body>
+
+</html>

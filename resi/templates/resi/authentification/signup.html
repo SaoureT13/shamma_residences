@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAMMA Residences</title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Rubik:300,regular,500,600,700,800,900,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'resi/css/styles.css' %}">
+</head>
+
+<body>
+    <center>
+        <h2>Create an account</h2>
+        <form id="signUp">
+            {% csrf_token %}
+
+            <label for="firstname">First name</label>
+            <input type="text" id="firstname" name="firstname" required>
+            <br>
+            <label for="lastname">Last name</label>
+            <input type="text" id="lastname" name="lastname" required>
+            <br>
+            <label for="email_or_phone">Email adress or Phone number</label>
+            <input type="text" id="email_or_phone" name="email_or_phone" required>
+            <br>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div class="infoPassword">
+                <p>Your password must contain: </p>
+                <ul>
+                    <li>At least 8 characters</li>
+                    <li>At least one lower-case letter (a-z) </li>
+                    <li>At least one upper case letter (A-Z)</li>
+                    <li>At least one numbers (0-9)</li>
+                    <li>At least one special character (e.g. !@#$%^&*)</li>
+                </ul>
+            </div>
+
+            <br>
+            <!-- <label for="contact">Contact number</label>
+            <input type="text" id="contact" name="contact" required>
+            <br> -->
+            <p>
+                <input type="checkbox" id="condition">
+                <label for="confirmation">I agree to tge terms of service and privacy policy</label>
+            </p>
+            <br>
+            <button type="submit">Register</button>
+        </form>
+    </center>
+
+
+    <script>
+        function CreateElement(tagName, attributes = {}) {
+            const element = document.createElement(tagName);
+
+            for (const [attribute, value] of Object.entries(attributes)) {
+                element.setAttribute(attribute, value);
+            }
+
+            return element;
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        document.getElementById("signUp").addEventListener("submit", (e) => {
+            e.preventDefault()
+            const form = e.currentTarget;
+            let ValidForm = true
+
+            const alertElement = CreateElement("div", {
+                class: "alert"
+            })
+            alertElement.innerHTML = `<p class="errorText"></p>`
+
+
+            const firstname = new FormData(form).get("firstname").toString().trim();
+            const firstnameRegex = /^[a-zA-Z ]+$/
+            if (!firstnameRegex.test(firstname)) {
+                ValidForm = false
+                const input = document.getElementById("firstname")
+                input.style.backgroundColor = "#ff0000"
+                document.body.prepend(alertElement)
+                document.querySelector(".alert p").textContent = 'Please enter correct firstname without numbers or special characters.'
+
+                setTimeout(() => {
+                    const elem = document.querySelector(".alert")
+                    elem.remove()
+                }, 3000)
+
+
+            }
+            const lastname = new FormData(form).get("lastname").toString().trim();
+            const lastnameRegex = /^[a-zA-Z]+$/
+            if (!lastnameRegex.test(lastname)) {
+                ValidForm = false
+                const input = document.getElementById("lastname")
+                input.style.backgroundColor = "#ff0000"
+                document.body.prepend(alertElement)
+                document.querySelector(".alert p").textContent = "Please enter correct lastname without numbers or special characters."
+
+                setTimeout(() => {
+                    const elem = document.querySelector(".alert")
+                    elem.remove()
+                }, 3000)
+
+
+            }
+            const password = new FormData(form).get("password").toString().trim()
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                ValidForm = false
+                const input = document.getElementById("password")
+                input.style.backgroundColor = "#ff0000"
+                document.body.prepend(alertElement)
+                document.querySelector(".alert p").textContent = "Please enter valid password."
+
+                setTimeout(() => {
+                    const elem = document.querySelector(".alert")
+                    elem.remove()
+                }, 3000)
+
+
+            }
+
+            let email = ""
+            let contact = ""
+            const email_or_phone = new FormData(form).get("email_or_phone").toString().trim()
+            if (email_or_phone.includes("@")) {
+                email = email_or_phone;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    ValidForm = false
+                    const input = document.getElementById("email")
+                    input.style.backgroundColor = "#ff0000"
+                    document.body.prepend(alertElement)
+                    document.querySelector(".alert p").textContent = "Please enter valid email address."
+
+                    setTimeout(() => {
+                        const elem = document.querySelector(".alert")
+                        elem.remove()
+                    }, 3000)
+                }
+            } else {
+                contact = email_or_phone;
+                const contactRegex = /^[0-9\s()+]+$/
+                if (!contactRegex.test(contact)) {
+                    ValidForm = false
+                    const input = document.getElementById("contact")
+                    input.style.backgroundColor = "#ff0000"
+                    document.body.prepend(alertElement)
+                    document.querySelector(".alert p").textContent = "Please enter valid phone number."
+
+                    setTimeout(() => {
+                        const elem = document.querySelector(".alert")
+                        elem.remove()
+                    }, 3000)
+                }
+            }
+
+            const formData = new FormData()
+            const csrftoken = getCookie('csrftoken');
+            if (ValidForm == true) {
+                formData.append('csrfmiddlewaretoken', csrftoken);
+                formData.append('firstname', firstname)
+                formData.append('lastname', lastname)
+                formData.append('password', password)
+                formData.append('email', email)
+                formData.append('contact', contact)
+            }
+
+            // console.log(formData)
+            if (formData) {
+                fetch('/signup/', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de la requete')
+                        }
+                        return response.json()
+                    })
+                    .then(data => {
+                        if (data.error) {
+                            document.body.prepend(alertElement)
+                            document.querySelector(".alert p").textContent = data.error
+                        } else if (data.uid) {
+                            window.location.href = `/number-verification?user_id=${data.uid}`;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error)
+                    })
+            }
+        })
+    </script>
+</body>
+
+</html>

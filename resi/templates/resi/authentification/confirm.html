@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+        {% for message in messages %}
+        <strong><i style="color: green;">{{message}}</i></strong>
+        {% endfor %}
+
+        <form action="{% url 'resi:confirm_account' %}" id="confirmation_form" method="POST">
+            {% csrf_token %}
+            <!-- <input type="hidden" name="uid" value="{{ uid }}"> -->
+            <label for="code">Confirm your account</label>
+            <input type="text" id="code" name="code" placeholder="Confirm you phone number">
+            <button type="submit">Verify</button>
+        </form>
+    </center>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const paramValue = urlParams.get('user_id');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const paramInput = document.createElement('input')
+            paramInput.type = 'hidden'
+            paramInput.name = 'user_id'
+
+            paramInput.value = paramValue
+            document.getElementById('confirmation_form').append(paramInput)
+        })
+    </script>
+</body>
+
+</html>

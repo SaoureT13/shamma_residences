@@ -1,0 +1,26 @@
+  , recuperer toutes les categories pour faire les boutons de filtre, lorsqu'une categorie subit un
+  clique, on recupere son pk, et on affiche que les chambres avec le pk de cette categorie en clé etrangere,
+  Quand une card de chambre subit un clique, on recupere son pk, puis on effectue une requete et on passe a sa page details pour display
+  toutes ses informations
+
+De Rachelle: 
+Chambre 25000f, à partir de 3 nuité 20000f. Non negociable les weekends.
+Versement en plusieurs parties, 10000f 1er versement, dès l'entrée du client, Versement du due. Un reçu après reglement de la facture
+Remboursement en cas de casse.  
+
+Traduction de mon mcd: 
+Un utilisateur (User) est associé à un client (Customer) via une relation un-à-un.
+Un département (Department) peut avoir plusieurs chambres (Room), tandis qu'une chambre appartient à un seul département.
+Chaque chambre peut être associée à une catégorie (Category) pour définir le type de chambre.
+Une réservation (Reservation) est effectuée par un client pour réserver une chambre pour une période donnée. Chaque réservation est liée à un client, une chambre et une facture.
+Une facture (Invoice) est émise pour chaque réservation et est liée à un client.
+Une révision (Review) est associée à une réservation et est effectuée par un utilisateur.
+
+Procedure pour creer une reservation: 
+Un utilisateur soumet une demande de réservation en fournissant les détails nécessaires tels que les dates de check-in et de check-out, les informations sur la chambre à réserver, etc.
+Le système vérifie la disponibilité de la chambre pour les dates spécifiées.
+Si la chambre est disponible, une réservation est créée avec les détails fournis par l'utilisateur.
+Une facture est automatiquement générée pour cette réservation, calculant le montant total en fonction du prix de la chambre et de la durée de la réservation.
+L'utilisateur effectue un paiement initial pour la réservation. Ce montant est enregistré dans la facture comme montant payé.
+Le montant dû est calculé en soustrayant le montant payé du montant total de la facture.
+Les données de la réservation, de la facture et du paiement sont enregistrées dans la base de données.

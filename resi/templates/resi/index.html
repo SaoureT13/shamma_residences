@@ -1,0 +1,71 @@
+{% include 'resi/includes/begin.html' %}
+<style>
+    ul,
+    li {
+        list-style-type: none;
+    }
+
+    .main {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .sidebar {
+        width: 18%;
+    }
+
+    .sidebar .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+        height: 100%;
+        border-top: 2px solid #E5E8EB;
+        border-right: 2px solid #E5E8EB;
+    }
+
+    .sidebar .menu>li {
+        width: 100%;
+        border-bottom: 2px solid #E5E8EB;
+    }
+
+    .sidebar .menu>li:hover .dropdown_box {
+        display: block;
+    }
+
+    .sidebar .menu>li .dropdown_box {
+        display: none;
+    }
+
+    .section {
+        width: 80%;
+    }
+</style>
+<!-- Conteneur des differentes presentations -->
+<main class="main">
+    <!-- une section pour chaque type de residence présentée -->
+    <section class="sidebar">
+        <ul class="menu">
+            <li>
+                Departement
+                <div class="dropdown_box">
+                    <ul>
+                        {% for department in context.departments %}
+                        <li 
+                            hx-get="{% url 'resi:get_rooms' department.pk %}" hx-target=".section"
+                            hx-push-url="?department={{ department.name }}">{{department.name}}</li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </li>
+            <li>Category</li>
+        </ul>
+    </section>
+    <section class="section">
+        {{ context.rooms }}
+    </section>
+</main>
+
+
+{% include 'resi/includes/end.html' %}

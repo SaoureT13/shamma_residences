@@ -1,0 +1,119 @@
+class Department(models.Model):
+    name = models.CharField(max_length=255, null=False)
+    adress = models.CharField(max_length=255, null=False)
+
+    def __str__(self):
+        return self.name
+
+#Je ne sais pas si ça va être necessaire vu que j'ai deja la categorie
+# class RoomType(models.Model):
+#     type_name = models.CharField(max_length=255, null=False)
+
+#     def __str__(self):
+#         return self.type_name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, null=False)
+
+    def __str__(self):
+        return self.name
+
+
+class Customer(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    contact1 = models.CharField(max_length=60, null=False)
+    contact2 = models.CharField(max_length=60, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.user.email}"
+
+
+class Invoice(models.Model):
+    name = models.CharField(max_length=100, null=False, unique=True)
+    total_amount = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # Montant total de la réservation
+    amount_paid = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0
+    )  # Montant déjà payé
+    amount_due = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # Montant restant à payer
+    paid = models.BooleanField(
+        default=False
+    )  # Indique si la facture est entièrement payée ou non
+
+    def save(self, *args, **kwargs):
+        # Calcul du montant restant à payer
+        self.amount_due = self.total_amount - self.amount_paid
+
+        # Vérification si la facture est entièrement payée
+        if self.amount_due == 0:
+            self.paid = True
+        else:
+            self.paid = False
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Room(models.Model):
+    name = models.CharField(max_length=100, null=False)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    available = models.BooleanField(default=True)
+    description = models.TextField(
+        blank=True, null=True
+    )  # Champ ajouté pour une description de la chambre
+    department = models.ForeignKey(
+        Department, on_delete=models.CASCADE, related_name="rooms"
+    )
+    image_url = models.URLField(blank=True, null=True)
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    # room_type = models.ForeignKey(
+    #     RoomType, on_delete=models.CASCADE, related_name="rooms"
+    # )
+
+    def is_available(self):
+        now = timezone.now().date()
+        # Vérifier si la chambre a des réservations pour aujourd'hui
+        reservations_today = self.reservation_set.filter(
+            check_in_date__lte=now, check_out_date__gte=now
+        )
+        return not reservations_today.exists()
+
+    def save(self, *args, **kwargs):
+        # Mettre à jour la disponibilité de la chambre en fonction des réservations
+        self.available = self.is_available()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+
+
+class Reservation(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    check_in_date = models.DateField()  # date de debut de la reservation
+    check_out_date = models.DateField()  # date de fin de la reservation
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )  # Champ ajouté pour enregistrer la date de création de la réservation
+
+    def __str__(self):
+        return f"{self.customer.user.username} - {self.room.name} - {self.check_in_date} to {self.check_out_date}"
+
+class Review(models.Model):
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    comment = models.TextField()
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.reservation.room.name}"

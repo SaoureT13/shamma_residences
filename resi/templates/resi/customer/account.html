@@ -1,0 +1,101 @@
+{% include 'resi/includes/begin.html' %}
+<style>
+    .flex {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .main {
+        width: 1080px;
+        margin: 0 auto;
+    }
+
+    .main>h1,
+    .main .user_info h4 {
+        margin-bottom: 30px;
+    }
+
+    .main>div {
+        margin-bottom: 30px;
+    }
+
+    .main .infos .card {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 23%;
+        height: 100px;
+        border: 2px solid #E5E8EB;
+        border-radius: 10px;
+    }
+
+    .main .infos .card p:not(.title) {
+        font-weight: bold;
+        font-size: 1.4em;
+    }
+
+
+    .main .user_info>div {
+        margin-bottom: 30px;
+    }
+
+    .main .user_info div .title {
+        margin-bottom: 5px;
+    }
+
+    .main .user_info div p:not(.title) {
+        color: #8A7861;
+        font-size: .9em;
+    }
+</style>
+<main class="main">
+    <h1>Your account</h1>
+    <p><a href="{% url 'resi:log_out' %}">Deconnection</a></p>
+    <div class="infos flex">
+        <div class="pending card">
+            <p>0</p>
+            <p class="title">Pending</p>
+        </div>
+        <div class="message card">
+            <p>0</p>
+            <p class="title">Message</p>
+        </div>
+        <div class="upcoming card">
+            <p>0</p>
+            <p class="title">Upcoming</p>
+        </div>
+        <div class="past card">
+            <p>0</p>
+            <p class="title">Past</p>
+        </div>
+    </div>
+    <div class="trips_info">
+        <h4>Your trip</h4>
+    </div>
+    <div class="user_info">
+        <h4>Personnal informations</h4>
+        <div class="flex">
+            <div>
+                <p class="title">Email</p>
+                <p>{{user.email}}</p>
+            </div>
+            <p>Verified</p>
+        </div>
+        <div class="flex">
+            <div>
+                <p class="title">Name</p>
+                <p>{{user.customer.first_name}} {{user.customer.last_name}}</p>
+            </div>
+            <p>Verified</p>
+        </div>
+        <div class="flex">
+            <div>
+                <p class="title">Phone number</p>
+                <p>{{user.customer.phone_number}}</p>
+            </div>
+            <p>Verified</p>
+        </div>
+    </div>
+</main>
+{% include 'resi/includes/end.html' %}

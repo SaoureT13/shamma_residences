@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+        href="https://fonts.googleapis.com/css?family=Rubik:300,regular,500,600,700,800,900,300italic,italic,500italic,600italic,700italic,800italic,900italic"
+        rel="stylesheet" />
+        
+    <link rel="stylesheet" href="{% static 'resi/css/styles.css' %}">
+    <script src="{% static 'resi/js/script.js' %}" type="module" defer></script>
+    <style>
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        body {
+            background-color: #FFFFFF;
+            color: #171412;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+            width: 100%;
+            padding: 0 50px;
+            border-bottom: 2px solid #E5E8EB;
+            margin-bottom: 40px;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            list-style-type: none;
+        }
+
+        .menu li {
+            padding: 20px 20px;
+            cursor: pointer;
+        }
+
+        .menu li a {
+            position: relative;
+            display: block;
+        }
+
+        .menu li a::after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: #171412;
+            bottom: 0;
+            left: 0;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all .3s;
+        }
+
+        .menu li:hover a::after {
+            color: blue;
+            transform: scaleX(1);
+        }
+    </style>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script> 
+</head>
+
+<body>
+    <header class="header">
+        <p><a href="{% url 'resi:home' %}">Shamma Residences</a></p>
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Wishlist</a></li>
+                <li>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'resi:account_details' %}">Bonjour, {{user.customer.first_name}}</a>
+                    {% else %}
+                    <a href="{% url 'resi:verification_account' %}">Se connecter</a>
+                    {% endif %}
+                </li>
+                <li><a href="#">Mes reservations</a></li>
+            </ul>
+        </nav>
+    </header>
